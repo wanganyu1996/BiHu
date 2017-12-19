@@ -10,6 +10,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.Map;
 /**
  * Created by wanganyu on 2017/12/18.
  */
+@Service
 public class EventConsumer implements InitializingBean,ApplicationContextAware{
     private static final Logger logger= LoggerFactory.getLogger(EventConsumer.class);
 
@@ -66,6 +68,6 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware{
     }
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-
+      this.applicationContext=applicationContext;
     }
 }

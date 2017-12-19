@@ -1,5 +1,8 @@
 package com.bihu.service;
 
+import com.bihu.async.EventModel;
+import com.bihu.async.EventProducer;
+import com.bihu.async.EventType;
 import com.bihu.dao.UserDao;
 import com.bihu.model.User;
 import com.bihu.util.BiHuConstant;
@@ -22,6 +25,9 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    EventProducer eventProducer;
     public Map<String,Object> register(String username,String password,String email){
        Map<String,Object> map=new HashMap<String, Object>();
        //邮箱校验
@@ -49,14 +55,18 @@ public class UserService {
        String activationCode= BiHuUtil.getRandomCode();
        user.setActivationCode(activationCode);
        Random random=new Random();
-       user.setHeadUrl(String.format(BiHuConstant.head_url,random.nextInt(1000)));
+       user.setHeadUrl(String.format(BiHuConstant.HEAD_URL,random.nextInt(1000)));
        userDao.insertUser(user);
-       //  ,用线程
-
-      // user.setActivationCode(BiHuConstant.activate_url+"?activationCode="+activationCode+"&email="+email);
+       //  将邮件发送添加到消息队列中
+        eventProducer.fireEvent(new EventModel(EventType.MAIL).setExt("username",username)
+                .setExt("email",email).setExt("code",activationCode));
         logger.info("注册成功！");
-        map.put("ok",0);
+        map.put("ok","注册成功！");
         return map;
+    }
+
+    public void  activate(String activationCode){
+      userDao.updateActivationStatusByActivationCode(activationCode);
     }
 
 }

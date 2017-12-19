@@ -19,6 +19,9 @@
     <select id="selectCountByEmail" resultType="int">
         select count(*) from user where email=#{email}
     </select>
+    <update id="updateActivationStatusByActivationCode">
+        update user set activation_status=1 where activation_code=#{activationCode}
+    </update>
   <!--
     <resultMap type="org.apache.ibatis.submitted.rounding.User" id="usermap2">
         <id column="id" property="id"/>

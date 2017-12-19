@@ -20,7 +20,6 @@ public class ActivateHandler implements EventHandler {
     @Override
     public void doHandle(EventModel eventModel) {
         mailSender.sendMail(eventModel.getExt("username"),eventModel.getExt("email"),eventModel.getExt("code"),1);
-
     }
 
     @Override

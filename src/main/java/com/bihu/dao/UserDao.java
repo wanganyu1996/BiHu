@@ -9,4 +9,5 @@ import com.bihu.model.User;
 public interface UserDao {
    public int insertUser(User user);
    public int selectCountByEmail(String email);
+   public void updateActivationStatusByActivationCode(@Param("activationCode")String activationCode);
 }
