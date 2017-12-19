@@ -30,12 +30,14 @@ public class LoginController {
     @ResponseBody
     public  Response register(String username, String password, String email) {
         Map<String,Object> map=userService.register(username,password,email);
-        if(map.get("ok").equals(0)){
-           return new Response(0,"注册成功，激活邮件已发送,请尽快激活！");
+        if(map.get("ok")!=null){
+            return new Response(0,"注册成功，激活邮件已发送,请尽快激活！");
         }else{
             return new Response(1,"error",map);
         }
     }
+
+
 
     /**
      * 显示注册页面
@@ -43,8 +45,27 @@ public class LoginController {
      * @return
      */
     @RequestMapping(path = {"/reg"}, method = RequestMethod.GET)
-    public static String registerView() {
+    public static String registerView(){
+        return "register";
+    }
+    /**
+     * 显示登录页面
+     *
+     * @return
+     */
+    @RequestMapping(path = {"/log"}, method = RequestMethod.GET)
+    public static String loginView() {
         return "register";
     }
 
+    /**
+     * 注册激活功能
+     * @param code
+     * @return
+     */
+    @RequestMapping("/activate")
+    public String activate(String code){
+        userService.activate(code);
+        return "redirect:/log#activateSuccess";
+    }
 }
