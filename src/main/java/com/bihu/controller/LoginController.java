@@ -1,13 +1,14 @@
 package com.bihu.controller;
 
-import com.bihu.dao.UserDao;
 import com.bihu.service.UserService;
+import com.bihu.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -26,11 +27,14 @@ public class LoginController {
      * @return
      */
     @RequestMapping(path = {"/register"}, method = RequestMethod.POST)
-    public  String register(String username, String password, String email) {
-
+    @ResponseBody
+    public  Response register(String username, String password, String email) {
         Map<String,Object> map=userService.register(username,password,email);
-        System.out.println(username + " " + email + " " + password);
-        return "register";
+        if(map.get("ok").equals(0)){
+           return new Response(0,"注册成功，激活邮件已发送,请尽快激活！");
+        }else{
+            return new Response(1,"error",map);
+        }
     }
 
     /**
