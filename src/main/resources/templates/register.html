@@ -188,18 +188,18 @@
             form.append("email",loginInputEmail.val());
             form.append("password",loginInputPassword.val());
             $.ajax({
-                url:"${base}/login",
+                url:"/login",
                 type:"post",
                 data:form,
                 processData:false,
                 contentType:false,
                 success:function(response){
                     if(response.state==0){
-                        localStorage.setItem("userId", response.data.userInfo.userId);
-                        localStorage.setItem("username", response.data.userInfo.username);
-                        localStorage.setItem("avatarUrl", response.data.userInfo.avatarUrl);
-                        localStorage.setItem("simpleDesc", response.data.userInfo.simpleDesc);
-                        window.location.href="${base}/index";
+                        localStorage.setItem("userId", response.data.user.id);
+                        localStorage.setItem("username", response.data.user.username);
+                        //localStorage.setItem("avatarUrl", response.data.userInfo.avatarUrl);
+                        //localStorage.setItem("simpleDesc", response.data.userInfo.simpleDesc);
+                        window.location.href="/index";
                     }else{
                         $("#login-password-error").text(response.message);
                     }

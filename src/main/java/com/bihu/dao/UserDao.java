@@ -10,4 +10,7 @@ public interface UserDao {
    public int insertUser(User user);
    public int selectCountByEmail(String email);
    public void updateActivationStatusByActivationCode(@Param("activationCode")String activationCode);
+   public User selectUserByEmail(@Param("email") String email);
+   public User selectUserById(@Param("id") int id);
+
 }

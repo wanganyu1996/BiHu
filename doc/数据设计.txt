@@ -7,3 +7,10 @@ salt     #加密字符串
 head_url #头像
 activation_status #激活状态
 activation_code   #激活码
+
+login_ticket
+id
+user_id
+ticket
+expired
+status

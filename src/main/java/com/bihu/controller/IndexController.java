@@ -14,9 +14,7 @@ public class IndexController {
     private static final Logger logger= LoggerFactory.getLogger(IndexController.class);
     @RequestMapping(path={"/","/index"},method = {RequestMethod.GET, RequestMethod.POST})
     public String index(){
-    ///
-      //  System.out.println("123");
-        return "home";
+        return "index";
     }
 
 }

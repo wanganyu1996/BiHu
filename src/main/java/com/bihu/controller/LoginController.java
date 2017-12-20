@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -28,15 +30,39 @@ public class LoginController {
      */
     @RequestMapping(path = {"/register"}, method = RequestMethod.POST)
     @ResponseBody
-    public  Response register(String username, String password, String email) {
+    public  Response register(String username, String password, String email, HttpServletResponse response) {
         Map<String,Object> map=userService.register(username,password,email);
+        if(map.containsKey("ticket")){
+            Cookie cookie=new Cookie("ticket",map.get("ticket").toString());
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
         if(map.get("ok")!=null){
             return new Response(0,"注册成功，激活邮件已发送,请尽快激活！");
         }else{
             return new Response(1,"error",map);
         }
     }
-
+    /**
+     * 登录功能实现
+     *
+     * @return
+     */
+    @RequestMapping(path = {"/login"}, method = RequestMethod.POST)
+    @ResponseBody
+    public  Response login(String email, String password, HttpServletResponse response) {
+        Map<String,Object> map=userService.login(email,password);
+        if(map.containsKey("ticket")){
+          Cookie cookie=new Cookie("ticket",map.get("ticket").toString());
+          cookie.setPath("/");
+          response.addCookie(cookie);
+        }
+        if(map.get("error")==null){
+            return new Response(0,"",map);
+        }else{
+            return new Response(1,map.get("error").toString());
+        }
+    }
 
 
     /**

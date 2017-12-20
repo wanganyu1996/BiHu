@@ -3,7 +3,9 @@ package com.bihu.service;
 import com.bihu.async.EventModel;
 import com.bihu.async.EventProducer;
 import com.bihu.async.EventType;
+import com.bihu.dao.LoginTicketDao;
 import com.bihu.dao.UserDao;
+import com.bihu.model.LoginTicket;
 import com.bihu.model.User;
 import com.bihu.util.BiHuConstant;
 import com.bihu.util.BiHuUtil;
@@ -25,6 +27,9 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    LoginTicketDao loginTicketDao;
 
     @Autowired
     EventProducer eventProducer;
@@ -61,12 +66,48 @@ public class UserService {
         eventProducer.fireEvent(new EventModel(EventType.MAIL).setExt("username",username)
                 .setExt("email",email).setExt("code",activationCode));
         logger.info("注册成功！");
+        String ticket=addLoginTicket(user.getId());
+        map.put("ticket",ticket);
         map.put("ok","注册成功！");
         return map;
     }
-
+    public Map<String,Object> login(String email,String password){
+        Map<String,Object> map=new HashMap<String, Object>();
+        //用户登录
+       User user=userDao.selectUserByEmail(email);
+       if(user==null){
+           map.put("error","用户名不存在或者账号错误！");
+           return map;
+       }
+      //判断用户是否激活
+        if(user.getActivationStatus()==0){
+            map.put("error","该账号尚未激活！");
+            return map;
+        }
+        if(!BiHuUtil.MD5(password+user.getSalt()).equals(user.getPassword())){
+            map.put("error","密码错误！");
+            return map;
+        }
+        /**
+         * 增加login_ticket
+         */
+        String ticket=addLoginTicket(user.getId());
+        map.put("ticket",ticket);
+        map.put("user",user);
+        return map;
+    }
     public void  activate(String activationCode){
       userDao.updateActivationStatusByActivationCode(activationCode);
+    }
+    public String addLoginTicket(int userId){
+        LoginTicket loginTicket=new LoginTicket();
+        Date date=new Date();
+        loginTicket.setExpired(new Date().getTime()+1000*3600*24);
+        loginTicket.setUserId(userId);
+        loginTicket.setTicket(UUID.randomUUID().toString().replaceAll("-",""));
+        loginTicket.setStatus(0);
+        loginTicketDao.addLoginTicket(loginTicket);
+       return loginTicket.getTicket();
     }
 
 }
