@@ -11,4 +11,5 @@ import org.apache.ibatis.annotations.Param;
 public interface LoginTicketDao {
     public int addLoginTicket(LoginTicket loginTicket);
     public LoginTicket selectLoginTicketByTicket(@Param("ticket") String ticket);
+    public void updateStatusByTicket(@Param("ticket") String ticket,@Param("status") int status);
 }

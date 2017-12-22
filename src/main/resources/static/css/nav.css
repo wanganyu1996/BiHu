@@ -127,6 +127,14 @@
 	color: white;
 }
 
+.nav-profile a.profile-link-reg{
+	display: block;
+	padding: 0 10px;
+	width: 130px;
+	height: 45px;
+	color: white;
+}
+
 .nav-profile a.profile-link:hover{
 	display: block;
 	background-color: #095fb3;

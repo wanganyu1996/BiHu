@@ -4,8 +4,9 @@
 		$(".profile-link").attr("href","/profile/"+localStorage.id);
 		$(".profile-follow-question-link").attr("href","/profileFollowQuestion/"+localStorage.userId);
 		$(".profile-question-link").attr("href","/profileQuestion/"+localStorage.userId);
-		
-		$("#profile-avatar").attr("src",localStorage.avatarUrl);
+		if(localStorage.headUrl!="") {
+            $("#profile-avatar").attr("src", localStorage.headUrl);
+        }
 		$("#profile-username").text(localStorage.username);
 	});
 </script>
@@ -32,16 +33,24 @@
 			<!-- <div class="notice"></div> -->
 		</div>
 		<div class="nav-profile">
+			#if(!$user)
+			<ul class="topnav-noauth clearfix">
+				<li>
+					<a href="/reg" class="profile-link-reg">注册/登录</a>
+				</li>
+			</ul>
+			#else
 			<a id="profile-link" href="profile" class="profile-link">
 				<img id="profile-avatar" src="">
 				<span id="profile-username"></span>
 			</a>
 			<ul class="nav-dropdown">
-				<li><a href="${base}/profile" class="profile-link"><i class="sprite-nav-profile"></i>&nbsp;&nbsp;&nbsp;我的主页</a></li>
+				<li><a href="/profile" class="profile-link"><i class="sprite-nav-profile"></i>&nbsp;&nbsp;&nbsp;我的主页</a></li>
 				<!-- <li><a href="${base}/letter"><i class="sprite-nav-letter"></i>&nbsp;&nbsp;&nbsp;私信</a></li> -->
-				<li><a href="${base}/setting"><i class="sprite-nav-setting"></i>&nbsp;&nbsp;&nbsp;设置</a></li>
-				<li><a href="${base}/logout"><i class="sprite-nav-logout"></i>&nbsp;&nbsp;&nbsp;退出</a></li>
+				<li><a href="/setting"><i class="sprite-nav-setting"></i>&nbsp;&nbsp;&nbsp;设置</a></li>
+				<li><a href="/logout"><i class="sprite-nav-logout"></i>&nbsp;&nbsp;&nbsp;退出</a></li>
 			</ul>
+			#end
 		</div>
 		<button class="ask-question open-mask">提问</button>
 	</div>

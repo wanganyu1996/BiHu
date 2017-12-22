@@ -11,11 +11,11 @@
     <select id="selectLoginTicketByTicket" resultType="com.bihu.model.LoginTicket">
         select * from login_ticket where ticket=#{ticket}
     </select>
-    <!--
-    <update id="updateActivationStatusByActivationCode">
-        update user set activation_status=1 where activation_code=#{activationCode}
+
+    <update id="updateStatusByTicket">
+        update login_ticket set status=#{status} where ticket=#{ticket}
     </update>
-    -->
+
 
 
 

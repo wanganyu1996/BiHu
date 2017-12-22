@@ -17,8 +17,12 @@
     <div class="content">
         <div class="home-entry">
             <div class="home-entry-avatar">
+                #if($user.headUrl)
+                <img id="userAvatar" src="$!{user.headUrl}">
+               #else
                 <img id="userAvatar" src="image/avatar2.jpg">
-            </div>
+                #end
+             </div>
             <div class="home-entry-box">
                 <ul class="home-entry-list">
                     <li><a href="#" class="open-mask"><i class="sprite-ask"></i>提问</a></li>

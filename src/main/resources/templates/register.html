@@ -197,7 +197,7 @@
                     if(response.state==0){
                         localStorage.setItem("userId", response.data.user.id);
                         localStorage.setItem("username", response.data.user.username);
-                        //localStorage.setItem("avatarUrl", response.data.userInfo.avatarUrl);
+                        localStorage.setItem("headUrl", response.data.user.headUrl);
                         //localStorage.setItem("simpleDesc", response.data.userInfo.simpleDesc);
                         window.location.href="/index";
                     }else{

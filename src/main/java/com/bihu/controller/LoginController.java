@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -93,5 +94,11 @@ public class LoginController {
     public String activate(String code){
         userService.activate(code);
         return "redirect:/log#activateSuccess";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(@CookieValue("ticket") String ticket){
+     userService.logout(ticket,1);
+      return "redirect:/";
     }
 }

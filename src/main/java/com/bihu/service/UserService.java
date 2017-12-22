@@ -110,4 +110,8 @@ public class UserService {
        return loginTicket.getTicket();
     }
 
+    public void logout(String ticket,int status){
+        loginTicketDao.updateStatusByTicket(ticket,status);
+    }
+
 }
